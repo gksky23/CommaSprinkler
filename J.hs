@@ -2,7 +2,7 @@ module J where
 import Data.List
 
 f (x:[])= x:[]
-f (s:s1:ss) = if not(head(s1)==','||head(s1)=='.')&&((last(s)==',')||(last(s)=='.')) then s:f((k (last(s)) s1):ss) else s:f(s1:ss)
+f (s:s1:ss) = if not(head(s1)==','||head(s1)=='.')&&((last(s)==',')||(last(s)=='.')) then s:f((k (last(s)) s1):ss) else if (head(s1)==','||head(s1)=='.')&&not((last(s)==',')||(last(s)=='.')) then (s++[head(s1)]):f(s1:ss) else s:f(s1:ss)
 
 k c l = c:l
 
@@ -48,4 +48,5 @@ delHeadComma (s:ss) = if head(s)==','||head(s)=='.' then (drop 1 s):ss else s:ss
 
 mf l = if (f (words l))==(delHeadComma(sumComma (ff l) (ff' l))) then (f (words l)) else mf (unwords$delHeadComma(sumComma (ff l) (ff' l)))
 
-result1 l = unwords(map (\x->if head(x)==','||head(x)=='.' then drop 1 x else x) l)
+result1 (x:[]) = x:[]
+result1 (x:x1:xs) = if (last(x)==','&&head(x1)==',')||(last(x)=='.'&&head(x1)=='.') then x: result1 ((tail x1):xs) else if not(last(x)==','||last(x)=='.')&&(head(x1)==',') then (x++","): result1(tail(x1):xs) else x: result1 (x1:xs)
